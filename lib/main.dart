@@ -10,6 +10,17 @@ void main() {
   runApp(const MyApp());
 }
 
+const TextStyle midTextStyle = TextStyle(
+  fontSize: 17,
+  fontWeight: FontWeight.w500,
+  color: Colors.black,
+);
+const TextStyle commonTextStyle = TextStyle(
+  fontSize: 17,
+  fontWeight: FontWeight.w500,
+  color: Colors.black,
+);
+
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
@@ -19,6 +30,11 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: ThemeData(
+        textTheme: const TextTheme(
+          bodyLarge: commonTextStyle,
+          bodyMedium: commonTextStyle,
+          bodySmall: commonTextStyle,
+        ),
         scaffoldBackgroundColor: Colors.white,
         useMaterial3: true,
       ),

@@ -1,27 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-void main() {
-  runApp(const MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: NotificationSettingsPage(),
-    );
-  }
-}
-
 class NotificationSettingsPage extends StatefulWidget {
   const NotificationSettingsPage({super.key});
 
   @override
-  _NotificationSettingsPageState createState() =>
+  State<NotificationSettingsPage> createState() =>
       _NotificationSettingsPageState();
 }
 
