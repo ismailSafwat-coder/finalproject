@@ -1,0 +1,9 @@
+flutter_native_splash:
+  android: true
+  ios: true
+  web: false
+
+  image: "images/photo_2025-02-03_13-46-00.jpg"
+
+  android_12:
+    image: "images/photo_2025-02-03_13-46-00.jpg"
