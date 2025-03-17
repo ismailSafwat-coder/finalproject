@@ -1,23 +1,15 @@
-import 'package:enhud/main.dart';
-import 'package:enhud/widget/alertdialog/activity.dart';
-import 'package:enhud/widget/alertdialog/assginmentdialog.dart';
-import 'package:enhud/widget/alertdialog/sleep.dart';
-import 'package:enhud/widget/alertdialog/taskdilog.dart';
 import 'package:enhud/widget/mytextformfiled.dart';
-import 'package:enhud/widget/studytabletextform.dart';
 import 'package:flutter/material.dart';
 
-class StudyTimetable extends StatefulWidget {
-  const StudyTimetable({super.key});
+class StudyTimetabletest extends StatefulWidget {
+  const StudyTimetabletest({super.key});
 
   @override
-  State<StudyTimetable> createState() => _StudyTimetableState();
+  State<StudyTimetabletest> createState() => _StudyTimetabletestState();
 }
 
-class _StudyTimetableState extends State<StudyTimetable> {
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  late double height;
-  late double width;
+class _StudyTimetabletestState extends State<StudyTimetabletest> {
+  final _formKey = GlobalKey<FormState>();
   String? _priority;
   List<List<Widget>> cellContent = [];
   List<String> timeSlots = [
@@ -32,8 +24,7 @@ class _StudyTimetableState extends State<StudyTimetable> {
     "Assignment",
     "Exam",
     "Activity",
-    "Another Class",
-    "sleep"
+    "Another Class"
   ];
 
   @override
@@ -73,10 +64,9 @@ class _StudyTimetableState extends State<StudyTimetable> {
 
   @override
   Widget build(BuildContext context) {
-    height = MediaQuery.sizeOf(context).height;
-    width = MediaQuery.sizeOf(context).width;
+    double height = MediaQuery.sizeOf(context).height;
+    double widget = MediaQuery.sizeOf(context).width;
     return Scaffold(
-      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         leading: const Icon(Icons.arrow_back),
         title: const Text('Study Timetable'),
@@ -118,7 +108,7 @@ class _StudyTimetableState extends State<StudyTimetable> {
                   onTap: _addNewTimeSlot,
                   child: Container(
                     height: 50,
-                    width: width * 0.25,
+                    width: widget * 0.25,
                     color: Colors.blue[100],
                     child: const Center(
                       child: Icon(Icons.add_circle, color: Colors.white),
@@ -163,7 +153,9 @@ class _StudyTimetableState extends State<StudyTimetable> {
       bool isrowheder = false,
       bool addpadding = false}) {
     return Container(
-      height: height * 0.12,
+      padding: addpadding
+          ? const EdgeInsets.symmetric(vertical: 20)
+          : const EdgeInsets.symmetric(vertical: 20.0),
       color:
           isHeader || isrowheder ? Colors.blue[100] : const Color(0xffE4E4E4),
       child: Center(
@@ -184,6 +176,7 @@ class _StudyTimetableState extends State<StudyTimetable> {
         _showAddItemDialog(rowIndex, colIndex);
       },
       child: Container(
+        padding: const EdgeInsets.symmetric(vertical: 20.0),
         color: const Color(0xffE4E4E4),
         child: Center(
           child: cellContent[rowIndex][colIndex],
@@ -195,32 +188,29 @@ class _StudyTimetableState extends State<StudyTimetable> {
   void _showAddItemDialog(int rowIndex, int colIndex) {
     String? selectedCategory;
     TextEditingController taskController = TextEditingController();
-    TextEditingController Descriptioncontroller = TextEditingController();
+    TextEditingController materialController = TextEditingController();
 
     showDialog(
       context: context,
       builder: (context) => StatefulBuilder(
         builder: (context, setDialogState) => AlertDialog(
-          scrollable: true,
           backgroundColor: const Color(0xfff8f7f7),
           contentPadding: const EdgeInsets.all(10),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10),
             side: const BorderSide(color: Color(0xffc6c6c6)),
           ),
-          content: IntrinsicHeight(
+          content: SizedBox(
             child: Column(
               children: [
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 10.0),
+                const Padding(
+                  padding: EdgeInsets.symmetric(vertical: 10.0),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      const Icon(Icons.arrow_back),
-                      selectedCategory == null
-                          ? const Text('Select Category')
-                          : Text('add New $selectedCategory'),
-                      const SizedBox(width: 20),
+                      Icon(Icons.arrow_back),
+                      Text('Select Category'),
+                      SizedBox(width: 20),
                     ],
                   ),
                 ),
@@ -252,129 +242,139 @@ class _StudyTimetableState extends State<StudyTimetable> {
                 const SizedBox(height: 20),
                 // Dynamic fields based on category
                 if (selectedCategory == 'Task') ...[
-                  //
-                  //done
-                  Taskdilog(
-                      type: 'Task',
-                      priority: _priority,
-                      formKey: _formKey,
-                      taskController: taskController,
-                      Descriptioncontroller: Descriptioncontroller,
-                      onPriorityChanged: (value) {
-                        setDialogState(() => _priority = value);
-                      })
-                ] //done
-                else if (selectedCategory == 'Assignment') ...[
-                  AssignmentDialog(
-                    type: 'Assignment',
-                    formKey: _formKey,
-                    taskController: taskController,
-                    Descriptioncontroller: Descriptioncontroller,
-                  )
-                ] else if (selectedCategory == 'Activity') ...[
-                  ActivityDialog(
-                    type: 'Activity',
-                    formKey: _formKey,
-                    taskController: taskController,
-                    Descriptioncontroller: Descriptioncontroller,
-                  )
-                ] else if (selectedCategory == 'Material') ...[
-                  AssignmentDialog(
-                    type: 'Material',
-                    formKey: _formKey,
-                    taskController: taskController,
-                    Descriptioncontroller: Descriptioncontroller,
-                  )
-                ] else if (selectedCategory == 'Exam') ...[
-                  AssignmentDialog(
-                    type: 'Exam',
-                    formKey: _formKey,
-                    taskController: taskController,
-                    Descriptioncontroller: Descriptioncontroller,
-                  )
-                ] else if (selectedCategory == 'Another Class') ...[
-                  AssignmentDialog(
-                    type: 'Another Class',
-                    formKey: _formKey,
-                    taskController: taskController,
-                    Descriptioncontroller: Descriptioncontroller,
-                  )
-                ] else if (selectedCategory == 'sleep') ...[
-                  const Sleep()
-                ],
-
-                const Spacer(),
-                ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.blue,
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 40, vertical: 12),
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8)),
-                  ),
-                  onPressed: () {
-                    setState(() {
-                      if (taskController.text.isNotEmpty &&
-                          Descriptioncontroller.text.isNotEmpty) {
-                        cellContent[rowIndex][colIndex] = Container(
-                          padding: const EdgeInsets.all(0),
-                          height: height * 0.13,
-                          width: double.infinity,
-                          color: selectedCategory == 'Task'
-                              ? const Color(0xffffa45b)
-                              : selectedCategory == 'Assignment'
-                                  ? const Color(0xffffa45b)
-                                  : selectedCategory == 'Exam'
-                                      ? const Color(0xffff6b6b)
-                                      : selectedCategory == 'Material'
-                                          ? const Color(0xff5f8cf8)
-                                          : selectedCategory == 'Activity'
-                                              ? const Color(0xffffe66d)
-                                              : const Color(0xff9bb7fa),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            crossAxisAlignment: CrossAxisAlignment.center,
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 16.0),
+                    child: Form(
+                      key: _formKey,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
                             children: [
-                              Text(
-                                taskController.text,
-                                style: const TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.bold),
+                              const Text('Task Title'),
+                              Expanded(
+                                child: TextFormField(
+                                  decoration: InputDecoration(
+                                      fillColor: Colors.blue,
+                                      hintText: 'Enter Task Title',
+                                      focusedBorder: OutlineInputBorder(
+                                        borderSide: const BorderSide(
+                                            color: Color.fromARGB(
+                                                255, 199, 191, 191),
+                                            width: 2.5),
+                                        borderRadius: BorderRadius.circular(10),
+                                      ),
+                                      enabledBorder: OutlineInputBorder(
+                                          borderSide: const BorderSide(
+                                              color: Color(0xFFebebeb)),
+                                          borderRadius:
+                                              BorderRadius.circular(10))),
+                                ),
                               ),
-                              Wrap(
-                                children: [
-                                  Text(
-                                    textAlign: TextAlign.center,
-                                    overflow: TextOverflow.ellipsis,
-                                    Descriptioncontroller.text,
-                                    maxLines: 3,
-                                    style: const TextStyle(
-                                        color: Colors.white, fontSize: 14),
-                                  ),
-                                ],
-                              )
                             ],
                           ),
-                        );
+                          const SizedBox(height: 10),
+                          const Text('Description'),
+                          TextFormField(
+                            decoration: const InputDecoration(
+                              hintText: 'Enter Task Description',
+                              border: OutlineInputBorder(),
+                            ),
+                            maxLines: 2,
+                          ),
+                          const SizedBox(height: 10),
+                          const Text('Due Date'),
+                          TextFormField(
+                            decoration: const InputDecoration(
+                              hintText: 'DD-MM-YYYY',
+                              border: OutlineInputBorder(),
+                            ),
+                            keyboardType: TextInputType.datetime,
+                          ),
+                          const SizedBox(height: 10),
+                          const Text('Priority'),
+                          Row(
+                            children: [
+                              Radio<String>(
+                                value: 'Low',
+                                groupValue: _priority,
+                                onChanged: (value) {
+                                  setState(() => _priority = value);
+                                },
+                              ),
+                              const Text('Low'),
+                              Radio<String>(
+                                value: 'Medium',
+                                groupValue: _priority,
+                                onChanged: (value) {
+                                  setState(() => _priority = value);
+                                },
+                              ),
+                              const Text('Medium'),
+                              Radio<String>(
+                                value: 'High',
+                                groupValue: _priority,
+                                onChanged: (value) {
+                                  setState(() => _priority = value);
+                                },
+                              ),
+                              const Text('High'),
+                            ],
+                          ),
+                          const SizedBox(height: 20),
+                          Center(
+                            child: ElevatedButton(
+                              onPressed: () {
+                                if (_formKey.currentState!.validate()) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(content: Text('Task Added')),
+                                  );
+                                }
+                              },
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.blue,
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 40, vertical: 12),
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(8)),
+                              ),
+                              child: const Text('Add Task',
+                                  style: TextStyle(color: Colors.white)),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ] else if (selectedCategory == 'Material') ...[
+                  Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: TextField(
+                      controller: materialController,
+                      decoration: const InputDecoration(
+                        labelText: 'Material Name',
+                        border: OutlineInputBorder(),
+                      ),
+                    ),
+                  ),
+                ],
+                const Spacer(),
+                ElevatedButton(
+                  onPressed: () {
+                    setState(() {
+                      if (selectedCategory == 'Task' &&
+                          taskController.text.isNotEmpty) {
+                        cellContent[rowIndex][colIndex] =
+                            Text(taskController.text);
+                      } else if (selectedCategory == 'Material' &&
+                          materialController.text.isNotEmpty) {
+                        cellContent[rowIndex][colIndex] =
+                            Text(materialController.text);
                       }
-                      // else if (selectedCategory == 'Material' &&
-                      //     materialController.text.isNotEmpty) {
-                      //   cellContent[rowIndex][colIndex] =
-                      //       Text(materialController.text);
-                      // }
-                      // if (_formKey.currentState!.validate()) {
-                      //   ScaffoldMessenger.of(context).showSnackBar(
-                      //     const SnackBar(content: Text('Task Added')),
-                      //   );
-                      // }
                     });
                     Navigator.of(context).pop();
                   },
-                  child: Center(
-                    child: Text('Add $selectedCategory',
-                        style: const TextStyle(color: Colors.white)),
-                  ),
+                  child: const Text('Add'),
                 ),
               ],
             ),

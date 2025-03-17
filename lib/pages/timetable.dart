@@ -1,7 +1,4 @@
 import 'package:enhud/main.dart';
-import 'package:enhud/widget/alertdialog/activity.dart';
-import 'package:enhud/widget/alertdialog/assginmentdialog.dart';
-import 'package:enhud/widget/alertdialog/sleep.dart';
 import 'package:enhud/widget/alertdialog/taskdilog.dart';
 import 'package:enhud/widget/mytextformfiled.dart';
 import 'package:enhud/widget/studytabletextform.dart';
@@ -32,8 +29,7 @@ class _StudyTimetableState extends State<StudyTimetable> {
     "Assignment",
     "Exam",
     "Activity",
-    "Another Class",
-    "sleep"
+    "Another Class"
   ];
 
   @override
@@ -107,6 +103,7 @@ class _StudyTimetableState extends State<StudyTimetable> {
                       6: FlexColumnWidth(1),
                       7: FlexColumnWidth(1),
                     },
+                    defaultColumnWidth: const FixedColumnWidth(50),
                     children: [
                       _buildTableHeader(),
                       for (int i = 0; i < timeSlots.length; i++)
@@ -196,20 +193,22 @@ class _StudyTimetableState extends State<StudyTimetable> {
     String? selectedCategory;
     TextEditingController taskController = TextEditingController();
     TextEditingController Descriptioncontroller = TextEditingController();
+    TextEditingController materialController = TextEditingController();
 
     showDialog(
       context: context,
       builder: (context) => StatefulBuilder(
         builder: (context, setDialogState) => AlertDialog(
-          scrollable: true,
           backgroundColor: const Color(0xfff8f7f7),
           contentPadding: const EdgeInsets.all(10),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10),
             side: const BorderSide(color: Color(0xffc6c6c6)),
           ),
-          content: IntrinsicHeight(
+          content: SizedBox(
+            height: 500,
             child: Column(
+              mainAxisSize: MainAxisSize.min,
               children: [
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 10.0),
@@ -253,56 +252,28 @@ class _StudyTimetableState extends State<StudyTimetable> {
                 // Dynamic fields based on category
                 if (selectedCategory == 'Task') ...[
                   //
-                  //done
                   Taskdilog(
-                      type: 'Task',
-                      priority: _priority,
-                      formKey: _formKey,
-                      taskController: taskController,
-                      Descriptioncontroller: Descriptioncontroller,
-                      onPriorityChanged: (value) {
-                        setDialogState(() => _priority = value);
-                      })
-                ] //done
-                else if (selectedCategory == 'Assignment') ...[
-                  AssignmentDialog(
-                    type: 'Assignment',
+                    priority: _priority,
                     formKey: _formKey,
                     taskController: taskController,
                     Descriptioncontroller: Descriptioncontroller,
-                  )
-                ] else if (selectedCategory == 'Activity') ...[
-                  ActivityDialog(
-                    type: 'Activity',
-                    formKey: _formKey,
-                    taskController: taskController,
-                    Descriptioncontroller: Descriptioncontroller,
+                    onPriorityChanged: (value) {
+                      setDialogState(() => _priority = value);
+                    },
+                    type: 'Task',
                   )
                 ] else if (selectedCategory == 'Material') ...[
-                  AssignmentDialog(
-                    type: 'Material',
-                    formKey: _formKey,
-                    taskController: taskController,
-                    Descriptioncontroller: Descriptioncontroller,
-                  )
-                ] else if (selectedCategory == 'Exam') ...[
-                  AssignmentDialog(
-                    type: 'Exam',
-                    formKey: _formKey,
-                    taskController: taskController,
-                    Descriptioncontroller: Descriptioncontroller,
-                  )
-                ] else if (selectedCategory == 'Another Class') ...[
-                  AssignmentDialog(
-                    type: 'Another Class',
-                    formKey: _formKey,
-                    taskController: taskController,
-                    Descriptioncontroller: Descriptioncontroller,
-                  )
-                ] else if (selectedCategory == 'sleep') ...[
-                  const Sleep()
+                  Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: TextField(
+                      controller: materialController,
+                      decoration: const InputDecoration(
+                        labelText: 'Material Name',
+                        border: OutlineInputBorder(),
+                      ),
+                    ),
+                  ),
                 ],
-
                 const Spacer(),
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
@@ -314,23 +285,14 @@ class _StudyTimetableState extends State<StudyTimetable> {
                   ),
                   onPressed: () {
                     setState(() {
-                      if (taskController.text.isNotEmpty &&
+                      if (selectedCategory == 'Task' &&
+                          taskController.text.isNotEmpty &&
                           Descriptioncontroller.text.isNotEmpty) {
                         cellContent[rowIndex][colIndex] = Container(
                           padding: const EdgeInsets.all(0),
                           height: height * 0.13,
                           width: double.infinity,
-                          color: selectedCategory == 'Task'
-                              ? const Color(0xffffa45b)
-                              : selectedCategory == 'Assignment'
-                                  ? const Color(0xffffa45b)
-                                  : selectedCategory == 'Exam'
-                                      ? const Color(0xffff6b6b)
-                                      : selectedCategory == 'Material'
-                                          ? const Color(0xff5f8cf8)
-                                          : selectedCategory == 'Activity'
-                                              ? const Color(0xffffe66d)
-                                              : const Color(0xff9bb7fa),
+                          color: const Color(0xffffa45b),
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             crossAxisAlignment: CrossAxisAlignment.center,
@@ -357,12 +319,11 @@ class _StudyTimetableState extends State<StudyTimetable> {
                             ],
                           ),
                         );
+                      } else if (selectedCategory == 'Material' &&
+                          materialController.text.isNotEmpty) {
+                        cellContent[rowIndex][colIndex] =
+                            Text(materialController.text);
                       }
-                      // else if (selectedCategory == 'Material' &&
-                      //     materialController.text.isNotEmpty) {
-                      //   cellContent[rowIndex][colIndex] =
-                      //       Text(materialController.text);
-                      // }
                       // if (_formKey.currentState!.validate()) {
                       //   ScaffoldMessenger.of(context).showSnackBar(
                       //     const SnackBar(content: Text('Task Added')),

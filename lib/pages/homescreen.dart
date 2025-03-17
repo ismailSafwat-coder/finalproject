@@ -2,6 +2,7 @@ import 'package:enhud/pages/exampage.dart';
 import 'package:enhud/pages/homepage.dart';
 import 'package:enhud/pages/notificationscreen.dart';
 import 'package:enhud/pages/settingsscreen.dart';
+import 'package:enhud/pages/timetable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -22,9 +23,7 @@ class _HomeScreenState extends State<HomeScreen> {
     const Center(
       child: Text('Timetable'),
     ),
-    const Center(
-      child: Text('Add'),
-    ),
+    const StudyTimetable(),
     const Exampage(),
     const SettingsScreen()
   ];

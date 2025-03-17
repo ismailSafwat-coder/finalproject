@@ -1,3 +1,4 @@
+import 'package:enhud/pages/notificationscreen.dart';
 import 'package:enhud/pages/settings/notification.dart';
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
@@ -43,7 +44,7 @@ class Homepage extends StatelessWidget {
                           onTap: () {
                             Navigator.of(context).push(MaterialPageRoute(
                                 builder: (context) =>
-                                    const NotificationSettingsPage()));
+                                    const NotificationsScreen()));
                           },
                           child: Image.asset(
                               'images/notificationvbellactive.png')),
@@ -287,6 +288,7 @@ class Homepage extends StatelessWidget {
       const Spacer(),
       percent != null
           ? CircularPercentIndicator(
+              animation: true,
               radius: 25,
               percent: percent,
               lineWidth: 5,
@@ -321,6 +323,8 @@ Row testfile(String name, double? percent, bool finish) {
     ),
     percent != null
         ? CircularPercentIndicator(
+            animation: true,
+
             radius: 25,
             percent: percent,
             lineWidth: 5,

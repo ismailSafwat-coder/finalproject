@@ -1,6 +1,6 @@
 import 'package:enhud/pages/signupscreen2.dart';
 import 'package:flutter/material.dart';
-import 'package:enhud/widget/checkdialog.dart';
+import 'package:enhud/widget/alertdialog/authdialog.dart';
 
 class SignupScreen1 extends StatelessWidget {
   const SignupScreen1({super.key});
@@ -82,9 +82,10 @@ class SignupScreen1 extends StatelessWidget {
                           Navigator.pop(context);
                         },
                         child: Container(
-                          width: 110,
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 18, vertical: 11),
+                          height: 44,
+                          width: 105,
+                          // padding: const EdgeInsets.symmetric(
+                          //     horizontal: 18, vertical: 11),
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(10),
                             border: Border.all(
@@ -92,6 +93,7 @@ class SignupScreen1 extends StatelessWidget {
                           ),
                           child: const Center(
                               child: Text(
+                            textAlign: TextAlign.center,
                             'Back',
                             style: TextStyle(
                                 fontSize: 17,

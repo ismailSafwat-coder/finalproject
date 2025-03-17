@@ -2,11 +2,14 @@ import 'package:enhud/pages/loginpage.dart';
 import 'package:flutter/material.dart';
 
 class CustomDialog extends StatelessWidget {
-  const CustomDialog({super.key});
+  final String title;
+  final String text;
+  const CustomDialog({super.key, required this.title, required this.text});
 
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
+      backgroundColor: Colors.white,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
       content: SizedBox(
         height: 400,
@@ -19,14 +22,14 @@ class CustomDialog extends StatelessWidget {
             Image.asset(
               'images/check.png',
             ),
-            const Text('Welcome Mahamoud ^_^',
-                style: TextStyle(
+            Text(title,
+                style: const TextStyle(
                     fontSize: 23,
                     fontWeight: FontWeight.w600,
                     color: Color(0xFF5b86ed))),
-            const Text('You have successfully created an account .',
+            Text(text,
                 textAlign: TextAlign.center,
-                style: TextStyle(
+                style: const TextStyle(
                     fontSize: 18,
                     color: Colors.black,
                     fontWeight: FontWeight.w400)),
