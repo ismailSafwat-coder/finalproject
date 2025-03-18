@@ -39,6 +39,7 @@ dependencies:
   flutter_native_splash: ^2.4.4
   percent_indicator: ^4.2.4
   intl: ^0.17.0
+  flutter_local_notifications: ^19.0.0
 
 dev_dependencies:
   flutter_test:

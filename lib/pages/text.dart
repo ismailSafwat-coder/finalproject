@@ -33,7 +33,7 @@ class _StudyTimetableState extends State<StudyTimetable> {
     "Exam",
     "Activity",
     "Another Class",
-    "sleep"
+    "sleep",
   ];
 
   @override
@@ -208,175 +208,189 @@ class _StudyTimetableState extends State<StudyTimetable> {
             borderRadius: BorderRadius.circular(10),
             side: const BorderSide(color: Color(0xffc6c6c6)),
           ),
-          content: IntrinsicHeight(
-            child: Column(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 10.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          content: SizedBox(
+            width: MediaQuery.of(context).size.width * 0.99,
+            child: IntrinsicHeight(
+              child: Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 10.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        IconButton(
+                          icon: const Icon(Icons.arrow_back),
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                        ),
+                        selectedCategory == null
+                            ? const Text('Select Category')
+                            : selectedCategory == 'sleep'
+                                ? const Text('Sleep Schedule')
+                                : Text('add New $selectedCategory'),
+                        const SizedBox(width: 20),
+                      ],
+                    ),
+                  ),
+                  const Divider(color: Color(0xffc6c6c6)),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      const Icon(Icons.arrow_back),
-                      selectedCategory == null
-                          ? const Text('Select Category')
-                          : Text('add New $selectedCategory'),
-                      const SizedBox(width: 20),
+                      const Text('Category', style: TextStyle(fontSize: 16)),
+                      const SizedBox(width: 10),
+                      DropdownButton<String>(
+                        hint: const Text('Select'),
+                        value: selectedCategory,
+                        icon: const Icon(Icons.arrow_drop_down),
+                        onChanged: (String? newValue) {
+                          setDialogState(() {
+                            selectedCategory = newValue;
+                          });
+                        },
+                        items: categories
+                            .map<DropdownMenuItem<String>>((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(value),
+                          );
+                        }).toList(),
+                      ),
                     ],
                   ),
-                ),
-                const Divider(color: Color(0xffc6c6c6)),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Text('Category', style: TextStyle(fontSize: 16)),
-                    const SizedBox(width: 10),
-                    DropdownButton<String>(
-                      hint: const Text('Select'),
-                      value: selectedCategory,
-                      icon: const Icon(Icons.arrow_drop_down),
-                      onChanged: (String? newValue) {
-                        setDialogState(() {
-                          selectedCategory = newValue;
-                        });
-                      },
-                      items: categories
-                          .map<DropdownMenuItem<String>>((String value) {
-                        return DropdownMenuItem<String>(
-                          value: value,
-                          child: Text(value),
-                        );
-                      }).toList(),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 20),
-                // Dynamic fields based on category
-                if (selectedCategory == 'Task') ...[
-                  //
-                  //done
-                  Taskdilog(
-                      type: 'Task',
-                      priority: _priority,
+                  const SizedBox(height: 10),
+                  // Dynamic fields based on category
+                  if (selectedCategory == 'Task') ...[
+                    //
+                    //done
+                    Taskdilog(
+                        type: 'Task',
+                        priority: _priority,
+                        formKey: _formKey,
+                        taskController: taskController,
+                        Descriptioncontroller: Descriptioncontroller,
+                        onPriorityChanged: (value) {
+                          setDialogState(() => _priority = value);
+                        })
+                  ] //done
+                  else if (selectedCategory == 'Assignment') ...[
+                    AssignmentDialog(
+                      type: 'Assignment',
                       formKey: _formKey,
                       taskController: taskController,
                       Descriptioncontroller: Descriptioncontroller,
-                      onPriorityChanged: (value) {
-                        setDialogState(() => _priority = value);
-                      })
-                ] //done
-                else if (selectedCategory == 'Assignment') ...[
-                  AssignmentDialog(
-                    type: 'Assignment',
-                    formKey: _formKey,
-                    taskController: taskController,
-                    Descriptioncontroller: Descriptioncontroller,
-                  )
-                ] else if (selectedCategory == 'Activity') ...[
-                  ActivityDialog(
-                    type: 'Activity',
-                    formKey: _formKey,
-                    taskController: taskController,
-                    Descriptioncontroller: Descriptioncontroller,
-                  )
-                ] else if (selectedCategory == 'Material') ...[
-                  AssignmentDialog(
-                    type: 'Material',
-                    formKey: _formKey,
-                    taskController: taskController,
-                    Descriptioncontroller: Descriptioncontroller,
-                  )
-                ] else if (selectedCategory == 'Exam') ...[
-                  AssignmentDialog(
-                    type: 'Exam',
-                    formKey: _formKey,
-                    taskController: taskController,
-                    Descriptioncontroller: Descriptioncontroller,
-                  )
-                ] else if (selectedCategory == 'Another Class') ...[
-                  AssignmentDialog(
-                    type: 'Another Class',
-                    formKey: _formKey,
-                    taskController: taskController,
-                    Descriptioncontroller: Descriptioncontroller,
-                  )
-                ] else if (selectedCategory == 'sleep') ...[
-                  const Sleep()
-                ],
+                    )
+                  ] else if (selectedCategory == 'Activity') ...[
+                    ActivityDialog(
+                      type: 'Activity',
+                      formKey: _formKey,
+                      taskController: taskController,
+                      Descriptioncontroller: Descriptioncontroller,
+                    )
+                  ] else if (selectedCategory == 'Material') ...[
+                    AssignmentDialog(
+                      type: 'Material',
+                      formKey: _formKey,
+                      taskController: taskController,
+                      Descriptioncontroller: Descriptioncontroller,
+                    )
+                  ] else if (selectedCategory == 'Exam') ...[
+                    AssignmentDialog(
+                      type: 'Exam',
+                      formKey: _formKey,
+                      taskController: taskController,
+                      Descriptioncontroller: Descriptioncontroller,
+                    )
+                  ] else if (selectedCategory == 'Another Class') ...[
+                    AssignmentDialog(
+                      type: 'Another Class',
+                      formKey: _formKey,
+                      taskController: taskController,
+                      Descriptioncontroller: Descriptioncontroller,
+                    )
+                  ] else if (selectedCategory == 'sleep') ...[
+                    const Sleep()
+                  ],
 
-                const Spacer(),
-                ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.blue,
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 40, vertical: 12),
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8)),
+                  const Spacer(),
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.blue,
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 10, vertical: 12),
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8)),
+                    ),
+                    onPressed: () {
+                      setState(() {
+                        if (taskController.text.isNotEmpty &&
+                            Descriptioncontroller.text.isNotEmpty) {
+                          cellContent[rowIndex][colIndex] = Container(
+                            padding: const EdgeInsets.all(0),
+                            height: height * 0.13,
+                            width: double.infinity,
+                            color: selectedCategory == 'Task'
+                                ? const Color(0xffffa45b)
+                                : selectedCategory == 'Assignment'
+                                    ? const Color(0xffffa45b)
+                                    : selectedCategory == 'Exam'
+                                        ? const Color(0xffff6b6b)
+                                        : selectedCategory == 'Material'
+                                            ? const Color(0xff5f8cf8)
+                                            : selectedCategory == 'Activity'
+                                                ? const Color(0xffffe66d)
+                                                : const Color(0xff9bb7fa),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Text(
+                                  taskController.text,
+                                  style: const TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                Wrap(
+                                  children: [
+                                    Text(
+                                      textAlign: TextAlign.center,
+                                      overflow: TextOverflow.ellipsis,
+                                      Descriptioncontroller.text,
+                                      maxLines: 3,
+                                      style: const TextStyle(
+                                          color: Colors.white, fontSize: 14),
+                                    ),
+                                  ],
+                                )
+                              ],
+                            ),
+                          );
+                        }
+                        // else if (selectedCategory == 'Material' &&
+                        //     materialController.text.isNotEmpty) {
+                        //   cellContent[rowIndex][colIndex] =
+                        //       Text(materialController.text);
+                        // }
+                        // if (_formKey.currentState!.validate()) {
+                        //   ScaffoldMessenger.of(context).showSnackBar(
+                        //     const SnackBar(content: Text('Task Added')),
+                        //   );
+                        // }
+                      });
+                      Navigator.of(context).pop();
+                    },
+                    child: Center(
+                      child: selectedCategory == 'sleep'
+                          ? const Text('Save',
+                              style:
+                                  TextStyle(color: Colors.white, fontSize: 18))
+                          : Text('Add $selectedCategory',
+                              style: const TextStyle(color: Colors.white)),
+                    ),
                   ),
-                  onPressed: () {
-                    setState(() {
-                      if (taskController.text.isNotEmpty &&
-                          Descriptioncontroller.text.isNotEmpty) {
-                        cellContent[rowIndex][colIndex] = Container(
-                          padding: const EdgeInsets.all(0),
-                          height: height * 0.13,
-                          width: double.infinity,
-                          color: selectedCategory == 'Task'
-                              ? const Color(0xffffa45b)
-                              : selectedCategory == 'Assignment'
-                                  ? const Color(0xffffa45b)
-                                  : selectedCategory == 'Exam'
-                                      ? const Color(0xffff6b6b)
-                                      : selectedCategory == 'Material'
-                                          ? const Color(0xff5f8cf8)
-                                          : selectedCategory == 'Activity'
-                                              ? const Color(0xffffe66d)
-                                              : const Color(0xff9bb7fa),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Text(
-                                taskController.text,
-                                style: const TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.bold),
-                              ),
-                              Wrap(
-                                children: [
-                                  Text(
-                                    textAlign: TextAlign.center,
-                                    overflow: TextOverflow.ellipsis,
-                                    Descriptioncontroller.text,
-                                    maxLines: 3,
-                                    style: const TextStyle(
-                                        color: Colors.white, fontSize: 14),
-                                  ),
-                                ],
-                              )
-                            ],
-                          ),
-                        );
-                      }
-                      // else if (selectedCategory == 'Material' &&
-                      //     materialController.text.isNotEmpty) {
-                      //   cellContent[rowIndex][colIndex] =
-                      //       Text(materialController.text);
-                      // }
-                      // if (_formKey.currentState!.validate()) {
-                      //   ScaffoldMessenger.of(context).showSnackBar(
-                      //     const SnackBar(content: Text('Task Added')),
-                      //   );
-                      // }
-                    });
-                    Navigator.of(context).pop();
-                  },
-                  child: Center(
-                    child: Text('Add $selectedCategory',
-                        style: const TextStyle(color: Colors.white)),
-                  ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ),

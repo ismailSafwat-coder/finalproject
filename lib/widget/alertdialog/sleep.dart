@@ -9,7 +9,7 @@ class Sleep extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(vertical: 25, horizontal: 0),
+      padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 0),
       child: Column(
         children: [
           Container(
@@ -30,8 +30,8 @@ class Sleep extends StatelessWidget {
           ),
           Container(
             width: 300,
-            margin: const EdgeInsets.symmetric(horizontal: 5),
-            height: MediaQuery.sizeOf(context).height * 0.4,
+            margin: const EdgeInsets.only(left: 5),
+            height: MediaQuery.sizeOf(context).height * 0.32,
             padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 5),
             decoration: BoxDecoration(
                 color: Colors.white,
@@ -51,7 +51,7 @@ class Sleep extends StatelessWidget {
                   children: [
                     const Text(
                       'Sleep Time',
-                      style: commonTextStyle,
+                      style: TextStyle(fontSize: 18),
                     ),
                     const SizedBox(
                       width: 20,
@@ -66,8 +66,8 @@ class Sleep extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     const Text(
-                      'Sleep Time',
-                      style: commonTextStyle,
+                      'Wake-Up Time',
+                      style: TextStyle(fontSize: 18),
                     ),
                     const SizedBox(
                       width: 20,
@@ -82,8 +82,8 @@ class Sleep extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     const Text(
-                      'Sleep Time',
-                      style: commonTextStyle,
+                      'Snooze Duration',
+                      style: TextStyle(fontSize: 18),
                     ),
                     const SizedBox(
                       width: 20,
@@ -99,7 +99,10 @@ class Sleep extends StatelessWidget {
                   children: [
                     const Text(
                       'Remind Before Time',
-                      style: commonTextStyle,
+                      style: TextStyle(fontSize: 18),
+                    ),
+                    const SizedBox(
+                      width: 5,
                     ),
                     Sleeptextform(hintText: 'Default')
                   ],

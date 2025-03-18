@@ -17,7 +17,7 @@ class Sleeptextform extends StatelessWidget {
               fillColor: Colors.white,
               hintText: hintText,
               contentPadding: const EdgeInsets.symmetric(
-                horizontal: 30,
+                horizontal: 22,
               ),
               focusedBorder: OutlineInputBorder(
                 borderSide: const BorderSide(

@@ -1,3 +1,6 @@
+import 'package:enhud/pages/loginpage.dart';
+import 'package:enhud/pages/noti.dart';
+import 'package:enhud/pages/notifications/notifications.dart';
 import 'package:enhud/pages/splachscreen.dart';
 import 'package:enhud/widget/alertdialog/studytabeldialog.dart';
 
@@ -6,6 +9,9 @@ import 'package:flutter/material.dart';
 import 'pages/text.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  //init notifications
+  Notifications().initNotification();
   runApp(const MyApp());
 }
 

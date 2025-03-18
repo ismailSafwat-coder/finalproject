@@ -31,13 +31,8 @@ class ActivityDialog extends StatelessWidget {
                 const SizedBox(
                   width: 10,
                 ),
-                SizedBox(
-                  height: 35,
-                  child: Flexible(
-                      child: Studytabletextform(
-                          controller: taskController,
-                          hintText: 'Enter $type Title')),
-                ),
+                Studytabletextform(
+                    controller: taskController, hintText: 'Enter $type Title')
               ],
             ),
             const SizedBox(height: 10),
@@ -47,13 +42,9 @@ class ActivityDialog extends StatelessWidget {
                 const SizedBox(
                   width: 10,
                 ),
-                SizedBox(
-                  height: 35,
-                  child: Flexible(
-                      child: Studytabletextform(
-                          controller: Descriptioncontroller,
-                          hintText: 'Enter Description')),
-                ),
+                Studytabletextform(
+                    controller: Descriptioncontroller,
+                    hintText: 'Enter Description')
               ],
             ),
             const SizedBox(height: 10),
