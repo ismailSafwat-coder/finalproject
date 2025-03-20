@@ -1,6 +1,8 @@
 import 'package:enhud/main.dart';
 import 'package:enhud/widget/alertdialog/activity.dart';
+import 'package:enhud/widget/alertdialog/anthorclass.dart';
 import 'package:enhud/widget/alertdialog/assginmentdialog.dart';
+import 'package:enhud/widget/alertdialog/freetime.dart';
 import 'package:enhud/widget/alertdialog/sleep.dart';
 import 'package:enhud/widget/alertdialog/taskdilog.dart';
 import 'package:enhud/widget/mytextformfiled.dart';
@@ -34,6 +36,7 @@ class _StudyTimetableState extends State<StudyTimetable> {
     "Activity",
     "Another Class",
     "sleep",
+    "freetime"
   ];
 
   @override
@@ -227,8 +230,21 @@ class _StudyTimetableState extends State<StudyTimetable> {
                         selectedCategory == null
                             ? const Text('Select Category')
                             : selectedCategory == 'sleep'
-                                ? const Text('Sleep Schedule')
-                                : Text('add New $selectedCategory'),
+                                ? const Text(
+                                    'Sleep Schedule',
+                                    style: commonTextStyle,
+                                  )
+                                : selectedCategory == 'freetime'
+                                    ? const Text(
+                                        'Free Time Planner',
+                                        style: commonTextStyle,
+                                      )
+                                    : selectedCategory == 'Another Class'
+                                        ? const Text(
+                                            'Add Your Class',
+                                            style: commonTextStyle,
+                                          )
+                                        : Text('add New $selectedCategory'),
                         const SizedBox(width: 20),
                       ],
                     ),
@@ -302,14 +318,14 @@ class _StudyTimetableState extends State<StudyTimetable> {
                       Descriptioncontroller: Descriptioncontroller,
                     )
                   ] else if (selectedCategory == 'Another Class') ...[
-                    AssignmentDialog(
-                      type: 'Another Class',
-                      formKey: _formKey,
+                    Anthorclass(
                       taskController: taskController,
                       Descriptioncontroller: Descriptioncontroller,
                     )
                   ] else if (selectedCategory == 'sleep') ...[
                     const Sleep()
+                  ] else if (selectedCategory == 'freetime') ...[
+                    const Freetime()
                   ],
 
                   const Spacer(),
@@ -381,7 +397,9 @@ class _StudyTimetableState extends State<StudyTimetable> {
                       Navigator.of(context).pop();
                     },
                     child: Center(
-                      child: selectedCategory == 'sleep'
+                      child: selectedCategory == 'sleep' ||
+                              selectedCategory == 'freetime' ||
+                              selectedCategory == 'Another Class'
                           ? const Text('Save',
                               style:
                                   TextStyle(color: Colors.white, fontSize: 18))

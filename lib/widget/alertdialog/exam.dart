@@ -3,14 +3,14 @@ import 'package:enhud/widget/studytabletextform.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-class ActivityDialog extends StatefulWidget {
+class ExamDialog extends StatefulWidget {
   final GlobalKey<FormState> formKey;
 
   final TextEditingController taskController;
   final TextEditingController Descriptioncontroller;
 
   final String type;
-  const ActivityDialog(
+  const ExamDialog(
       {super.key,
       required this.formKey,
       required this.taskController,
@@ -18,10 +18,10 @@ class ActivityDialog extends StatefulWidget {
       required this.type});
 
   @override
-  State<ActivityDialog> createState() => _ActivityDialogState();
+  State<ExamDialog> createState() => _ExamDialogState();
 }
 
-class _ActivityDialogState extends State<ActivityDialog> {
+class _ExamDialogState extends State<ExamDialog> {
   TimeOfDay? startTime;
   DateTime? selectedDate;
 
@@ -143,7 +143,6 @@ class _ActivityDialogState extends State<ActivityDialog> {
               height: 10,
             ),
             TextFormField(
-              controller: widget.Descriptioncontroller,
               maxLines: 3,
               decoration: InputDecoration(
                   fillColor: Colors.white,

@@ -1,11 +1,17 @@
 import 'package:enhud/main.dart';
+import 'package:enhud/widget/alertdialog/dropdownbuttoms.dart';
 import 'package:enhud/widget/sleeptextform.dart';
 import 'package:enhud/widget/studytabletextform.dart';
 import 'package:flutter/material.dart';
 
-class Sleep extends StatelessWidget {
+class Sleep extends StatefulWidget {
   const Sleep({super.key});
 
+  @override
+  State<Sleep> createState() => _SleepState();
+}
+
+class _SleepState extends State<Sleep> {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -78,33 +84,33 @@ class Sleep extends StatelessWidget {
                 const SizedBox(
                   height: 15,
                 ),
-                Row(
+                const Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    const Text(
+                    Text(
                       'Snooze Duration',
                       style: TextStyle(fontSize: 18),
                     ),
-                    const SizedBox(
+                    SizedBox(
                       width: 20,
                     ),
-                    Sleeptextform(hintText: 'Default')
+                    MyDropdownbuttoms()
                   ],
                 ),
                 const SizedBox(
                   height: 15,
                 ),
-                Row(
+                const Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    const Text(
+                    Text(
                       'Remind Before Time',
                       style: TextStyle(fontSize: 18),
                     ),
-                    const SizedBox(
+                    SizedBox(
                       width: 5,
                     ),
-                    Sleeptextform(hintText: 'Default')
+                    MyDropdownbuttoms()
                   ],
                 ),
               ],

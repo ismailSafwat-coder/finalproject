@@ -2,6 +2,7 @@ import 'package:enhud/pages/loginpage.dart';
 import 'package:enhud/pages/noti.dart';
 import 'package:enhud/pages/notifications/notifications.dart';
 import 'package:enhud/pages/splachscreen.dart';
+import 'package:enhud/pages/test.dart';
 import 'package:enhud/widget/alertdialog/studytabeldialog.dart';
 
 import 'package:flutter/material.dart';
@@ -35,15 +36,15 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: ThemeData(
-        textTheme: const TextTheme(
-          bodyLarge: commonTextStyle,
-          bodyMedium: midTextStyle,
-          bodySmall: commonTextStyle,
-        ),
+        // textTheme: const TextTheme(
+        //   bodyLarge: commonTextStyle,
+        //   bodyMedium: midTextStyle,
+        //   bodySmall: commonTextStyle,
+        // ),
         scaffoldBackgroundColor: Colors.white,
         useMaterial3: true,
       ),
-      home: const StudyTimetable(), // Show the splash screen first
+      home: const LoginPage(),
     );
   }
 }
