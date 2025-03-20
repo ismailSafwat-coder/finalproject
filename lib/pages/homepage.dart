@@ -257,7 +257,7 @@ class Homepage extends StatelessWidget {
                   children: [
                     Image.asset(
                       fit: BoxFit.fill,
-                      'images/clock.png',
+                      'images/clock1.png',
                       width: 20,
                       height: 20,
                     ),

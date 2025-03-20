@@ -27,19 +27,19 @@ class _LoginPageState extends State<LoginPage> {
           ),
 
           // Centered content (your form, button, etc.)
-          Center(
+          const Center(
             child: Column(
               mainAxisSize: MainAxisSize
                   .min, // Ensures the column takes up only necessary space
               children: [
                 // Optional title or other widgets
 
-                const SizedBox(height: 140),
+                SizedBox(height: 140),
 
                 // Your custom form (or any other widget)
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                  child: CustomForm(formState: formState),
+                  padding: EdgeInsets.symmetric(horizontal: 20.0),
+                  child: CustomForm(),
                 ),
               ],
             ),

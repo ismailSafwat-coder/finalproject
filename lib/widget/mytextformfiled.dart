@@ -1,11 +1,14 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 
 class Mytextformfiled extends StatelessWidget {
+  TextEditingController? controller;
   final String? Function(String?)? validator;
   final String? hintText;
 
-  const Mytextformfiled({
+  Mytextformfiled({
     super.key,
+    this.controller,
     required this.validator,
     this.hintText,
   });
@@ -13,6 +16,7 @@ class Mytextformfiled extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      controller: controller,
       validator: validator,
       decoration: InputDecoration(
           hintText: hintText,

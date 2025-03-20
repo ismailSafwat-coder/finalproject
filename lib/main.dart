@@ -1,16 +1,21 @@
+import 'package:enhud/firebase_options.dart';
 import 'package:enhud/pages/loginpage.dart';
 import 'package:enhud/pages/noti.dart';
 import 'package:enhud/pages/notifications/notifications.dart';
 import 'package:enhud/pages/splachscreen.dart';
 import 'package:enhud/pages/test.dart';
 import 'package:enhud/widget/alertdialog/studytabeldialog.dart';
+import 'package:firebase_core/firebase_core.dart';
 
 import 'package:flutter/material.dart';
 
 import 'pages/text.dart';
 
-void main() {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+
   //init notifications
   Notifications().initNotification();
   runApp(const MyApp());

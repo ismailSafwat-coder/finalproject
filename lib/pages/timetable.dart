@@ -340,8 +340,7 @@ class _StudyTimetableState extends State<StudyTimetable> {
                     ),
                     onPressed: () {
                       setState(() {
-                        if (taskController.text.isNotEmpty &&
-                            Descriptioncontroller.text.isNotEmpty) {
+                        if (taskController.text.isNotEmpty) {
                           cellContent[rowIndex][colIndex] = Container(
                             padding: const EdgeInsets.all(0),
                             height: height * 0.13,
@@ -357,38 +356,48 @@ class _StudyTimetableState extends State<StudyTimetable> {
                                             : selectedCategory == 'Activity'
                                                 ? const Color(0xffffe66d)
                                                 : const Color(0xff9bb7fa),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Text(
-                                  taskController.text,
-                                  style: const TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                                Wrap(
-                                  children: [
-                                    Text(
-                                      textAlign: TextAlign.center,
-                                      overflow: TextOverflow.ellipsis,
-                                      Descriptioncontroller.text,
-                                      maxLines: 3,
-                                      style: const TextStyle(
-                                          color: Colors.white, fontSize: 17),
+                            child: Descriptioncontroller.text.isEmpty
+                                ? Center(
+                                    child: Text(
+                                      taskController.text,
+                                      style: commonTextStyle,
                                     ),
-                                  ],
-                                )
-                              ],
-                            ),
+                                  )
+                                : Column(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceEvenly,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        taskController.text,
+                                        style: const TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                      Wrap(
+                                        children: [
+                                          Text(
+                                            textAlign: TextAlign.center,
+                                            overflow: TextOverflow.ellipsis,
+                                            Descriptioncontroller.text,
+                                            maxLines: 3,
+                                            style: const TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 17),
+                                          ),
+                                        ],
+                                      )
+                                    ],
+                                  ),
                           );
                         } else if (taskController.text.isEmpty &&
                             Descriptioncontroller.text.isEmpty) {
                           showDialog(
                             context: context,
                             builder: (context) => const AlertDialog(
-                              content: Text('please filled all fillds'),
+                              content: Text('please filled required filled'),
                             ),
                           );
                         }

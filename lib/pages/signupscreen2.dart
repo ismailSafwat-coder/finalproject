@@ -1,3 +1,4 @@
+import 'package:enhud/auth/authservices.dart';
 import 'package:enhud/pages/loginpage.dart';
 import 'package:enhud/widget/alertdialog/authdialog.dart';
 import 'package:enhud/widget/custombuttom1.dart';
@@ -13,6 +14,7 @@ class Signupscreen2 extends StatefulWidget {
 
 class _Signupscreen2State extends State<Signupscreen2> {
   double toppadding = 40;
+
   GlobalKey<FormState> formkey = GlobalKey<FormState>();
   TextEditingController fullnamecontroller = TextEditingController();
   TextEditingController emailcontroller = TextEditingController();
@@ -68,7 +70,7 @@ class _Signupscreen2State extends State<Signupscreen2> {
                       ),
                     ),
                     Custombuttom1(
-                        onPressed: () {
+                        onPressed: () async {
                           if (formkey.currentState!.validate()) {
                             if (selectedGender == null) {
                               showDialog(
@@ -78,12 +80,27 @@ class _Signupscreen2State extends State<Signupscreen2> {
                                 ),
                               );
                             } else {
+                              // String auth = await Authservices().signup(
+                              //     emailcontroller.text,
+                              //     passwordcontroller.text,
+                              //     context);
+                              // if (auth == 'succeed') {
+                              //   showDialog(
+                              //     context: context,
+                              //     builder: (context) => const CustomDialog(
+                              //       text:
+                              //           'You have successfully created an account .',
+                              //       title: 'Welcome Mahmoud ^_^',
+                              //     ),
+                              //   );
+                              // }
                               showDialog(
                                 context: context,
-                                builder: (context) => const CustomDialog(
+                                builder: (context) => CustomDialog(
                                   text:
                                       'You have successfully created an account .',
-                                  title: 'Welcome Mahmoud ^_^',
+                                  title:
+                                      'Welcome ${fullnamecontroller.text} ^_^',
                                 ),
                               );
                             }
@@ -120,12 +137,14 @@ class _Signupscreen2State extends State<Signupscreen2> {
                     const SizedBox(
                       height: 2,
                     ),
-                    Mytextformfiled(validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return "Full name is required";
-                      }
-                      return null;
-                    }),
+                    Mytextformfiled(
+                        controller: fullnamecontroller,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return "Full name is required";
+                          }
+                          return null;
+                        }),
                     const SizedBox(
                       height: 10,
                     ),
@@ -165,12 +184,12 @@ class _Signupscreen2State extends State<Signupscreen2> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          " New Password",
+                          " Password",
                           style: TextStyle(
                               fontSize: 22, fontWeight: FontWeight.bold),
                         ),
                         Text(
-                          '',
+                          '* ',
                           style: TextStyle(color: Colors.red, fontSize: 20),
                         )
                       ],
@@ -262,7 +281,7 @@ class _Signupscreen2State extends State<Signupscreen2> {
                       height: 2,
                     ),
                     Container(
-                      margin: const EdgeInsets.only(right: 210),
+                      margin: const EdgeInsets.only(right: 200),
                       child: TextField(
                         onTap: () async {
                           final DateTime today = DateTime.now();

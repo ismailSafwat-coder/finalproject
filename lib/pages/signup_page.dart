@@ -1,10 +1,17 @@
+import 'package:enhud/main.dart';
 import 'package:enhud/pages/signupscreen2.dart';
 import 'package:flutter/material.dart';
 import 'package:enhud/widget/alertdialog/authdialog.dart';
 
-class SignupScreen1 extends StatelessWidget {
+class SignupScreen1 extends StatefulWidget {
   const SignupScreen1({super.key});
 
+  @override
+  State<SignupScreen1> createState() => _SignupScreen1State();
+}
+
+class _SignupScreen1State extends State<SignupScreen1> {
+  String type = '';
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -43,13 +50,25 @@ class SignupScreen1 extends StatelessWidget {
                       const SizedBox(
                         height: 15,
                       ),
-                      Container(
-                          padding: const EdgeInsets.all(20),
-                          decoration: BoxDecoration(
-                              border: Border.all(
-                                  color: const Color(0xFFf8f8f8), width: 2.0),
-                              borderRadius: BorderRadius.circular(5)),
-                          child: Image.asset('images/teacher.png'))
+                      GestureDetector(
+                        onTap: () {
+                          type = 'Teacher';
+                          setState(() {});
+                        },
+                        child: Container(
+                            padding: const EdgeInsets.all(20),
+                            decoration: BoxDecoration(
+                                color: type == 'Teacher'
+                                    ? const Color(0xFF90CAF9)
+                                    : const Color(0xFFf8f8f8),
+                                border: Border.all(
+                                    color: type == 'Teacher'
+                                        ? const Color(0xFF90CAF9)
+                                        : const Color(0xFFf8f8f8),
+                                    width: 2.0),
+                                borderRadius: BorderRadius.circular(5)),
+                            child: Image.asset('images/teacher.png')),
+                      )
                     ],
                   ),
                   Column(
@@ -62,13 +81,25 @@ class SignupScreen1 extends StatelessWidget {
                       const SizedBox(
                         height: 15,
                       ),
-                      Container(
-                          padding: const EdgeInsets.all(20),
-                          decoration: BoxDecoration(
-                              border: Border.all(
-                                  color: const Color(0xFFf8f8f8), width: 2.0),
-                              borderRadius: BorderRadius.circular(5)),
-                          child: Image.asset('images/student.png'))
+                      InkWell(
+                        onTap: () {
+                          type = 'Student';
+                          setState(() {});
+                        },
+                        child: Container(
+                            padding: const EdgeInsets.all(20),
+                            decoration: BoxDecoration(
+                                color: type == 'Student'
+                                    ? const Color(0xFF90CAF9)
+                                    : const Color(0xFFf8f8f8),
+                                border: Border.all(
+                                    color: type == 'Student'
+                                        ? const Color(0xFF90CAF9)
+                                        : const Color(0xFFf8f8f8),
+                                    width: 2.0),
+                                borderRadius: BorderRadius.circular(5)),
+                            child: Image.asset('images/student.png')),
+                      )
                     ],
                   ),
                   const SizedBox(
@@ -104,8 +135,20 @@ class SignupScreen1 extends StatelessWidget {
                       ),
                       ElevatedButton(
                         onPressed: () {
-                          Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) => const Signupscreen2()));
+                          if (type == '') {
+                            showDialog(
+                              context: context,
+                              builder: (context) => const AlertDialog(
+                                content: Text(
+                                  'you are student or teacher',
+                                  style: midTextStyle,
+                                ),
+                              ),
+                            );
+                          } else {
+                            Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) => const Signupscreen2()));
+                          }
                         },
                         style: ElevatedButton.styleFrom(
                           shape: RoundedRectangleBorder(

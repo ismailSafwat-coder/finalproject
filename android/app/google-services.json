@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "268965377007",
+    "project_id": "enhud-265f2",
+    "storage_bucket": "enhud-265f2.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:268965377007:android:aa2f55fefa19b98ef8fc1a",
+        "android_client_info": {
+          "package_name": "com.example.enhud"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCmtvpiWrujbP3L1yttqDlBs7ccxJ7HSrU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

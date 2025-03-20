@@ -1,3 +1,4 @@
+import 'package:enhud/auth/authservices.dart';
 import 'package:enhud/pages/forgetpassword1.dart';
 import 'package:enhud/pages/homescreen.dart';
 import 'package:enhud/pages/signup_page.dart';
@@ -6,19 +7,21 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class CustomForm extends StatefulWidget {
-  final GlobalKey<FormState> formState;
-  const CustomForm({super.key, required this.formState});
+  const CustomForm({super.key});
 
   @override
   State<CustomForm> createState() => _CustomFormState();
 }
 
 class _CustomFormState extends State<CustomForm> {
+  TextEditingController emailcontroller = TextEditingController();
+  GlobalKey<FormState> formState = GlobalKey();
+  TextEditingController passwordcontroller = TextEditingController();
   bool isObscured = true;
   @override
   Widget build(BuildContext context) {
     return Form(
-      key: widget.formState,
+      key: formState,
       child: Column(
         children: [
           const Row(
@@ -38,6 +41,7 @@ class _CustomFormState extends State<CustomForm> {
             height: 2,
           ),
           Mytextformfiled(
+            controller: emailcontroller,
             validator: (value) {
               if (value == null || value.isEmpty) {
                 return "Please enter your email";
@@ -68,6 +72,7 @@ class _CustomFormState extends State<CustomForm> {
             height: 2,
           ),
           TextFormField(
+            controller: passwordcontroller,
             validator: (value) {
               if (value == null || value.isEmpty) {
                 return "Password is required";
@@ -152,13 +157,23 @@ class _CustomFormState extends State<CustomForm> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Container(
-                decoration:
-                    BoxDecoration(borderRadius: BorderRadius.circular(100)),
-                height: 70,
-                width: 70,
-                child: SvgPicture.asset(
-                  'images/google.svg',
+              GestureDetector(
+                onTap: () async {
+                  Authservices().signinWithGoogle(context);
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const HomeScreen(),
+                      ));
+                },
+                child: Container(
+                  decoration:
+                      BoxDecoration(borderRadius: BorderRadius.circular(100)),
+                  height: 70,
+                  width: 70,
+                  child: SvgPicture.asset(
+                    'images/google.svg',
+                  ),
                 ),
               ),
               ClipRRect(
@@ -192,11 +207,17 @@ class _CustomFormState extends State<CustomForm> {
               child: TextButton(
                 child: const Text('Login',
                     style: TextStyle(fontSize: 21, color: Colors.white)),
-                onPressed: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const HomeScreen()));
+                onPressed: () async {
+                  String auth = await Authservices().signin(
+                      email: emailcontroller.text,
+                      password: passwordcontroller.text,
+                      context: context);
+                  if (auth == 'succeed') {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const HomeScreen()));
+                  }
                 },
               ),
             ),

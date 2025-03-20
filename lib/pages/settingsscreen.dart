@@ -1,3 +1,6 @@
+import 'package:enhud/auth/authservices.dart';
+import 'package:enhud/pages/homescreen.dart';
+import 'package:enhud/pages/loginpage.dart';
 import 'package:enhud/pages/settings/accountinfo_page.dart';
 import 'package:enhud/pages/settings/feedback.dart';
 import 'package:enhud/pages/settings/howtouse.dart';
@@ -194,7 +197,16 @@ class SettingsScreen extends StatelessWidget {
           ),
         ),
         InkWell(
-          onTap: () {},
+          onTap: () {
+            Authservices().singout();
+            Navigator.pushAndRemoveUntil(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const LoginPage(),
+              ),
+              (route) => false,
+            );
+          },
           child: Container(
             padding: const EdgeInsets.all(5),
             margin: const EdgeInsets.all(20),
