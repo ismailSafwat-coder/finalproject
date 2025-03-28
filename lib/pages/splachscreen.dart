@@ -30,7 +30,7 @@ class _SplashScreenState extends State<SplashScreen> {
           const Color(0xFFFFFFFF), // Same as the native splash color
       body: Center(
         child: Image.asset(
-          "images/photo_2025-02-03_13-46-00.jpg",
+          "images/enhudicon.jpg",
           height: 500,
           width: 500,
         ), // Second, larger image

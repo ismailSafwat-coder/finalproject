@@ -2,12 +2,12 @@ import 'package:enhud/main.dart';
 import 'package:enhud/widget/alertdialog/activity.dart';
 import 'package:enhud/widget/alertdialog/anthorclass.dart';
 import 'package:enhud/widget/alertdialog/assginmentdialog.dart';
+import 'package:enhud/widget/alertdialog/exam.dart';
 import 'package:enhud/widget/alertdialog/freetime.dart';
 import 'package:enhud/widget/alertdialog/sleep.dart';
 import 'package:enhud/widget/alertdialog/taskdilog.dart';
-import 'package:enhud/widget/mytextformfiled.dart';
-import 'package:enhud/widget/studytabletextform.dart';
 import 'package:flutter/material.dart';
+// ... (keep your existing imports)
 
 class StudyTimetable extends StatefulWidget {
   const StudyTimetable({super.key});
@@ -21,7 +21,12 @@ class _StudyTimetableState extends State<StudyTimetable> {
   late double height;
   late double width;
   String? _priority;
-  List<List<Widget>> cellContent = [];
+
+  // Track current week offset (0 = current week, 1 = next week, etc.)
+  int _currentWeekOffset = 0;
+
+  // Store content for all weeks (week 0, week 1, etc.)
+  List<List<List<Widget>>> allWeeksContent = [];
   List<String> timeSlots = [
     '08:00 am - 09:00 am',
     '09:00 am - 10:00 am',
@@ -34,20 +39,64 @@ class _StudyTimetableState extends State<StudyTimetable> {
     "Assignment",
     "Exam",
     "Activity",
-    "Another Class",
     "sleep",
-    "freetime"
+    "freetime",
+    "Another Class"
   ];
 
   @override
   void initState() {
     super.initState();
-    _initializeCellContent();
+    _initializeWeeksContent();
   }
 
-  void _initializeCellContent() {
-    cellContent =
-        List.generate(timeSlots.length, (_) => List.filled(8, const Text('')));
+  void _initializeWeeksContent() {
+    // Initialize with at least one week
+    if (allWeeksContent.isEmpty) {
+      allWeeksContent.add(_createNewWeekContent());
+    }
+  }
+
+  List<List<Widget>> _createNewWeekContent() {
+    return List.generate(
+        timeSlots.length, (_) => List.filled(8, const Text('')));
+  }
+
+  List<List<Widget>> get _currentWeekContent {
+    // Ensure we have content for the current week
+    while (_currentWeekOffset >= allWeeksContent.length) {
+      allWeeksContent.add(_createNewWeekContent());
+    }
+    return allWeeksContent[_currentWeekOffset];
+  }
+
+  void _goToPreviousWeek() {
+    setState(() {
+      _currentWeekOffset--;
+      if (_currentWeekOffset < 0) {
+        _currentWeekOffset = 0; // Don't go before week 0
+      }
+    });
+  }
+
+  void _goToNextWeek() {
+    setState(() {
+      _currentWeekOffset++;
+    });
+  }
+
+  String _getWeekTitle() {
+    if (_currentWeekOffset == 0) {
+      return 'Current Week';
+    } else if (_currentWeekOffset == 1) {
+      return 'Next Week';
+    } else if (_currentWeekOffset == -1) {
+      return 'Last Week';
+    } else if (_currentWeekOffset > 1) {
+      return 'In $_currentWeekOffset Weeks';
+    } else {
+      return '${-_currentWeekOffset} Weeks Ago';
+    }
   }
 
   Future<void> _addNewTimeSlot() async {
@@ -70,7 +119,10 @@ class _StudyTimetableState extends State<StudyTimetable> {
 
     setState(() {
       timeSlots.add(newTimeSlot);
-      cellContent.add(List.filled(8, const Text('')));
+      // Add new row to all weeks
+      for (var weekContent in allWeeksContent) {
+        weekContent.add(List.filled(8, const Text('')));
+      }
     });
   }
 
@@ -81,8 +133,29 @@ class _StudyTimetableState extends State<StudyTimetable> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        leading: const Icon(Icons.arrow_back),
-        title: const Text('Study Timetable'),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            setState(() {
+              _currentWeekOffset = 0;
+            });
+          },
+        ),
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            IconButton(
+              icon: const Icon(Icons.arrow_back_ios),
+              onPressed: _goToPreviousWeek,
+            ),
+            Text(_getWeekTitle()),
+            IconButton(
+              icon: const Icon(Icons.arrow_forward_ios),
+              onPressed: _goToNextWeek,
+            ),
+          ],
+        ),
+        centerTitle: true,
       ),
       body: SingleChildScrollView(
         scrollDirection: Axis.vertical,
@@ -189,7 +262,7 @@ class _StudyTimetableState extends State<StudyTimetable> {
       child: Container(
         color: const Color(0xffE4E4E4),
         child: Center(
-          child: cellContent[rowIndex][colIndex],
+          child: _currentWeekContent[rowIndex][colIndex],
         ),
       ),
     );
@@ -277,8 +350,6 @@ class _StudyTimetableState extends State<StudyTimetable> {
                   const SizedBox(height: 10),
                   // Dynamic fields based on category
                   if (selectedCategory == 'Task') ...[
-                    //
-                    //done
                     Taskdilog(
                         type: 'Task',
                         priority: _priority,
@@ -288,8 +359,7 @@ class _StudyTimetableState extends State<StudyTimetable> {
                         onPriorityChanged: (value) {
                           setDialogState(() => _priority = value);
                         })
-                  ] //done
-                  else if (selectedCategory == 'Assignment') ...[
+                  ] else if (selectedCategory == 'Assignment') ...[
                     AssignmentDialog(
                       type: 'Assignment',
                       formKey: _formKey,
@@ -311,7 +381,7 @@ class _StudyTimetableState extends State<StudyTimetable> {
                       Descriptioncontroller: Descriptioncontroller,
                     )
                   ] else if (selectedCategory == 'Exam') ...[
-                    AssignmentDialog(
+                    ExamDialog(
                       type: 'Exam',
                       formKey: _formKey,
                       taskController: taskController,
@@ -339,9 +409,10 @@ class _StudyTimetableState extends State<StudyTimetable> {
                     ),
                     onPressed: () {
                       setState(() {
-                        if (taskController.text.isNotEmpty &&
-                            Descriptioncontroller.text.isNotEmpty) {
-                          cellContent[rowIndex][colIndex] = Container(
+                        if (taskController.text.isNotEmpty) {
+                          // Update the current week's content
+                          allWeeksContent[_currentWeekOffset][rowIndex]
+                              [colIndex] = Container(
                             padding: const EdgeInsets.all(0),
                             height: height * 0.13,
                             width: double.infinity,
@@ -356,43 +427,51 @@ class _StudyTimetableState extends State<StudyTimetable> {
                                             : selectedCategory == 'Activity'
                                                 ? const Color(0xffffe66d)
                                                 : const Color(0xff9bb7fa),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Text(
-                                  taskController.text,
-                                  style: const TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                                Wrap(
-                                  children: [
-                                    Text(
-                                      textAlign: TextAlign.center,
-                                      overflow: TextOverflow.ellipsis,
-                                      Descriptioncontroller.text,
-                                      maxLines: 3,
-                                      style: const TextStyle(
-                                          color: Colors.white, fontSize: 14),
+                            child: Descriptioncontroller.text.isEmpty
+                                ? Center(
+                                    child: Text(
+                                      taskController.text,
+                                      style: commonTextStyle,
                                     ),
-                                  ],
-                                )
-                              ],
+                                  )
+                                : Column(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceEvenly,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        taskController.text,
+                                        style: const TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                      Wrap(
+                                        children: [
+                                          Text(
+                                            textAlign: TextAlign.center,
+                                            overflow: TextOverflow.ellipsis,
+                                            Descriptioncontroller.text,
+                                            maxLines: 3,
+                                            style: const TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 17),
+                                          ),
+                                        ],
+                                      )
+                                    ],
+                                  ),
+                          );
+                        } else if (taskController.text.isEmpty &&
+                            Descriptioncontroller.text.isEmpty) {
+                          showDialog(
+                            context: context,
+                            builder: (context) => const AlertDialog(
+                              content: Text('please filled required filled'),
                             ),
                           );
                         }
-                        // else if (selectedCategory == 'Material' &&
-                        //     materialController.text.isNotEmpty) {
-                        //   cellContent[rowIndex][colIndex] =
-                        //       Text(materialController.text);
-                        // }
-                        // if (_formKey.currentState!.validate()) {
-                        //   ScaffoldMessenger.of(context).showSnackBar(
-                        //     const SnackBar(content: Text('Task Added')),
-                        //   );
-                        // }
                       });
                       Navigator.of(context).pop();
                     },
@@ -404,7 +483,8 @@ class _StudyTimetableState extends State<StudyTimetable> {
                               style:
                                   TextStyle(color: Colors.white, fontSize: 18))
                           : Text('Add $selectedCategory',
-                              style: const TextStyle(color: Colors.white)),
+                              style: const TextStyle(
+                                  color: Colors.white, fontSize: 18)),
                     ),
                   ),
                 ],

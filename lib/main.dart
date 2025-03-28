@@ -39,7 +39,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
+      title: 'ُenhud',
       theme: ThemeData(
         // textTheme: const TextTheme(
         //   bodyLarge: commonTextStyle,
@@ -49,7 +49,7 @@ class MyApp extends StatelessWidget {
         scaffoldBackgroundColor: Colors.white,
         useMaterial3: true,
       ),
-      home: const LoginPage(),
+      home: const StudyTimetable(),
     );
   }
 }
