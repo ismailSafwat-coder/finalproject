@@ -52,7 +52,7 @@ class Homepage extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(
-                  height: 15,
+                  height: 16,
                 ),
                 //today schedule
                 Container(
